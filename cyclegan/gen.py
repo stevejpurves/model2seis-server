@@ -21,6 +21,8 @@ def load_cyclegan(opt):
     opt.align_data = False
     opt.model = 'cycle_gan'
     opt.which_model_netG = 'resnet_9blocks'
+    opt.continue_train = True
+    opt.which_epoch = 3
     opt.which_direction = 'AtoB'
     opt.input_nc = 1
     opt.output_nc = 1
