@@ -75,7 +75,8 @@ def main():
     # Save image
     util.save_image(fake_model, './fake_model.png')
     util.save_image(fake_seismic, './fake_seismic.png')
-
+    print(fake_model[0, 0:10])
+    print(normalize_image(model, opt)[0, 0:10])
 
 if __name__ == '__main__':
     main()
