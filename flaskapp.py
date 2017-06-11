@@ -3,8 +3,7 @@ import os
 sys.path.append(os.path.abspath('./src'))
 from flask import Flask, request, send_from_directory, jsonify
 import json
-from binascii import a2b_base64
-import time,hashlib
+import string,time,hashlib
 import numpy as np
 import urllib, cStringIO
 from tempfile import NamedTemporaryFile
@@ -22,19 +21,21 @@ def get_model(id):
 def get_forward_model():
   #return jsonify({"ok": True}) 
   #tempFileObj = NamedTemporaryFile(mode='w+b',suffix='jpg')
-  data = request.get_json(force=True)
+  body = request.get_json(force=True)
+  [_,data]=body['dataUrl'].split(',')
   #binary_data = a2b_base64(data['dataUrl'])
+  binary_data = data.decode('base64')
   hash = hashlib.sha1()
   hash.update(str(time.time()))
   name=hash.hexdigest()[:10]
   fd = open('./tmp/'+name,'wb')
-  #fd.write(binary_data)
+  fd.write(binary_data)
   fd.close
   r = sketch2model.call_sketch2model(url="http://ec2-35-158-38-106.eu-central-1.compute.amazonaws.com/tmp/"+name)
   #tempFileObj = cStringIO.StringIO(urllib.urlopen(r['url']).read())  
   #tempFileObj.seek(0,0)
   #response = send_file(tempFileObj, attachment_filename='myfile.png')
-  return data['dataUrl']
+  return name 
  
 @app.route('/api/inverse')
 def get_inverse_model():
