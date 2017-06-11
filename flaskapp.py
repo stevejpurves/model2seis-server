@@ -8,9 +8,10 @@ import numpy as np
 import urllib, cStringIO
 from tempfile import NamedTemporaryFile
 from src import sketch2model
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__, static_url_path='')
-
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/api/model/<id>')
 def get_model(id):
