@@ -8,11 +8,11 @@ import numpy as np
 import urllib, cStringIO
 from tempfile import NamedTemporaryFile
 from src import sketch2model
-from flask_cors import CORS, cross_origin
+#from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "/tmp"
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+#cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/api/model/<id>')
 def get_model(id):
@@ -32,11 +32,12 @@ def get_forward_model():
   fd = open(app.config['UPLOAD_FOLDER']+'/'+name+'.png','wb')
   fd.write(binary_data)
   fd.close
-  #r = sketch2model.call_sketch2model(url="http://ec2-35-158-38-106.eu-central-1.compute.amazonaws.com/model/"+name)
+  url="http://ec2-35-158-38-106.eu-central-1.compute.amazonaws.com/api/model/"+name
+  r = sketch2model.call_sketch2model(url)
   #tempFileObj = cStringIO.StringIO(urllib.urlopen(r['url']).read())  
   #tempFileObj.seek(0,0)
   #response = send_file(tempFileObj, attachment_filename='myfile.png')
-  return jsonify({ "modelUrl": '/api/model/'+name, "seismicUrl": ""})
+  return jsonify({ "modelUrl": '/api/model/'+name, "seismicUrl": "")
 
 @app.route('/api/forward-model_only')
 def get_forward_from_model_only():
